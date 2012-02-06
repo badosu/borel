@@ -1,1 +1,1 @@
-require 'lib/interval'
+require 'borel/interval'

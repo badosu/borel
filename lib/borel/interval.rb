@@ -1,5 +1,5 @@
-require File.expand_path(File.join(File.dirname(__FILE__), './numeric'))
-require File.expand_path(File.join(File.dirname(__FILE__), './range'))
+require 'borel/numeric'
+require 'borel/range'
 
 class Interval
   include Enumerable

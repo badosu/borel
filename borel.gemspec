@@ -1,4 +1,4 @@
-require File.expand_path('../lib/borel/version', __FILE__)
+require './lib/borel/version.rb'
 
 Gem::Specification.new do |s|
   s.name = "borel"
