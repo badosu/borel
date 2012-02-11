@@ -11,7 +11,7 @@ class Interval
       if array.empty?
         []
       elsif array.first.kind_of?(Array)
-        array.select{|x| !x.empty?}.map { |x| Simple.new(*x) }
+        array.select{|x| !x.empty?}.map{|x| Simple.new(*x)}
       else
         [Simple.new(*array)]
       end
@@ -27,13 +27,13 @@ class Interval
 
   def Interval.union(*array)
     l = []
-    array.map{|x| x.components}.flatten.sort_by{|x| x.inf}.each{|x|
+    array.map(&:components).flatten.sort_by(&:inf).each{|x|
       if x.sup < x.inf
         # skip it
       elsif l.empty? || x.inf > l.last.sup
         l <<= x
       elsif x.sup > l.last.sup
-        l[-1] = Simple.new(l.last.inf, x.sup)
+        l[-1] = Interval[l.last.inf, x.sup]
       end
     }
     if l.size == 1
@@ -60,11 +60,11 @@ class Interval
   end
 
   def ==(other)
-    self.class === other && self.components == other.components
+    self.components == other.components
   end
 
   def include?(x)
-    any?{|i| i.include?(x)}
+    any?{|i| i.include? x}
   end
 
   def to_interval
@@ -75,29 +75,11 @@ class Interval
     [other.to_interval, self]
   end
 
-  [[:&, :intersect]].each {|op, meth|
-    define_method(op) {|other|
-      (other.to_interval.map{|y| map{|x| x.send(meth,y)}}.flatten).reduce(:|)
-    }
-  }
-
-  [[:-, :minus]].each {|op, meth|
-    define_method(op) {|other|
-      map{|x| other.to_interval.map{|y| x.send(meth,y)}.reduce(:&)}.flatten.reduce(:|)
-    }
-  }
-
-  [[:~, :complement]].each {|op, meth|
-    define_method(op) {
-      map{|x| x.to_interval.map{x.send(meth)}.reduce(:&)}.flatten.reduce(:|)
-    }
-  }
-
-  def + (other)
-    self | (other)
+  def +(other)
+    self | other
   end
 
-  def | (other)
+  def |(other)
     Interval.union(other.to_interval, self)
   end
 
@@ -117,13 +99,30 @@ class Interval
     end
   end
 
+  [[:&, :intersect]].each do |op, meth|
+    define_method(op) {|other|
+      (other.to_interval.map{|y| map{|x| x.send(meth,y)}}.flatten).reduce(:|)
+    }
+  end
+
+  [[:~, :complement]].each do |op, meth|
+    define_method(op) {
+      map{|x| x.to_interval.map(&meth).reduce(:&)}.flatten.reduce(:|)
+    }
+  end
+
+  [[:-, :minus]].each do |op, meth|
+    define_method(op) {|other|
+      map{|x| other.to_interval.map{|y| x.send(meth,y)}.reduce(:&)}.flatten.reduce(:|)
+    }
+  end
 end
 
 class Interval::Simple < Interval
+  include Enumerable
+
   attr :inf
   attr :sup
-
-  include Enumerable
 
   def each
     yield(self)
@@ -143,16 +142,28 @@ class Interval::Simple < Interval
     freeze
   end
 
+  def ==(other)
+    [inf, sup] == [other.inf, other.sup]
+  end
+
+  def intersect(other)
+    Interval[[inf, other.inf].max, [sup, other.sup].min]
+  end
+
+  def complement
+    Interval[-Infinity,inf] | Interval[sup,Infinity]
+  end
+
+  def minus (other)
+    self & ~other
+  end
+
   def construction
     extrema.uniq
   end
 
   def simple?
     true
-  end
-
-  def == (other)
-    [inf,sup] == [other.inf,other.sup]
   end
 
   def include?(x)
@@ -163,22 +174,9 @@ class Interval::Simple < Interval
     [inf,sup]
   end
 
-  def intersect (other)
-    self.class.new([inf,other.inf].max, [sup,other.sup].min)
-  end
-
-  def complement
-    Interval[-Infinity,inf]|Interval[sup,Infinity]
-  end
-
-  def minus (other)
-    self & ~other
-  end
-
   def degenerate?
     inf == sup
   end
-
 end
 
 class Interval::Multiple < Interval
@@ -194,7 +192,6 @@ class Interval::Multiple < Interval
     components.each { |o| yield(o) }
     self
   end
-
 end
 
 class Interval
