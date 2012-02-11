@@ -1,6 +1,8 @@
 require 'borel/numeric'
 require 'borel/range'
 
+Kernel::Infinity = 1/0.0
+
 class Interval
   include Enumerable
 
@@ -57,7 +59,7 @@ class Interval
     inspect
   end
 
-  def == (other)
+  def ==(other)
     self.class === other && self.components == other.components
   end
 
@@ -69,29 +71,31 @@ class Interval
     self
   end
 
-  def coerce (other)
+  def coerce(other)
     [other.to_interval, self]
-  end
-
-  def & (other)
-    # implemented below
   end
 
   [[:&, :intersect]].each {|op, meth|
     define_method(op) {|other|
-      Interval.union(*other.to_interval.map {|y| self.map {|x| x.send(meth,y) } }.flatten)
+      (other.to_interval.map{|y| map{|x| x.send(meth,y)}}.flatten).reduce(:|)
     }
   }
 
-  def ~ (other)
-    # implemented below
-  end
-
-  [[:~, :minus]].each {|op, meth|
+  [[:-, :minus]].each {|op, meth|
     define_method(op) {|other|
-      self.map{|x| other.to_interval.map{|y| x.send(meth,y) }.reduce(:&) }.flatten.reduce(:|)
+      map{|x| other.to_interval.map{|y| x.send(meth,y)}.reduce(:&)}.flatten.reduce(:|)
     }
   }
+
+  [[:~, :complement]].each {|op, meth|
+    define_method(op) {
+      map{|x| x.to_interval.map{x.send(meth)}.reduce(:&)}.flatten.reduce(:|)
+    }
+  }
+
+  def + (other)
+    self | (other)
+  end
 
   def | (other)
     Interval.union(other.to_interval, self)
@@ -99,10 +103,6 @@ class Interval
 
   def empty?
     components.empty?
-  end
-
-  def sharp?
-    all? {|x| x.sharp?}
   end
 
   def degenerate?
@@ -135,8 +135,6 @@ class Interval::Simple < Interval
   end
 
   def initialize (a, b = a)
-    raise ArgumentError, "Extrema must be numeric: #{[a,b].uniq.inspect}" unless
-      Numeric === a && Numeric === b
     if (a.respond_to?(:nan?) && a.nan? ) || (b.respond_to?(:nan?) && b.nan?)
       @inf, @sup = -Infinity, Infinity
     else
@@ -154,7 +152,7 @@ class Interval::Simple < Interval
   end
 
   def == (other)
-    self.class == other.class && inf == other.inf && sup == other.sup
+    [inf,sup] == [other.inf,other.sup]
   end
 
   def include?(x)
@@ -165,56 +163,16 @@ class Interval::Simple < Interval
     [inf,sup]
   end
 
-  def width
-    sup - inf
-  end
-
-  def midpoint
-    (inf + sup) * 2 **-1
-  end
-
-  def number
-    if inf == sup
-      inf
-    else
-      raise Exception::Nondegenerate, self
-    end
-  end
-
   def intersect (other)
     self.class.new([inf,other.inf].max, [sup,other.sup].min)
   end
 
-  def minus (other)
-    if other.sup < inf || other.inf > sup                 # ( ) [ ] ( )
-      self
-    elsif other.inf == sup                                # [ X )
-      Interval[sup]
-    elsif other.sup == inf                                # ( X ]
-      Interval[inf]
-    elsif other.sup < sup && other.inf > inf              # [( )]
-      Interval[other.sup, sup] | Interval[inf, other.inf]
-    elsif other.sup > sup && other.inf < inf              # ([ ])
-      Interval[]
-    elsif sup > other.sup                                 # ([ )] | X )]
-      Interval[other.sup,sup] | (inf == other.inf ? Interval[inf] : Interval[] )
-    elsif inf <= other.inf                                 # [( ]) | [( X | X ])
-      Interval[inf,other.inf] | (sup == other.sup ? Interval[sup] : Interval[] )
-    elsif other.sup == sup
-      Interval[sup]
-    end
+  def complement
+    Interval[-Infinity,inf]|Interval[sup,Infinity]
   end
 
-  def sharp?
-    w = width
-    if w == 0
-      true
-    elsif w.kind_of?(Float) && (inf >= 0  || sup <= 0)
-      s1, s2 = extrema.map{|x| x.abs}.sort
-      s1 + s1.to_f.ulp == s2
-    else
-      false
-    end
+  def minus (other)
+    self & ~other
   end
 
   def degenerate?
@@ -237,12 +195,6 @@ class Interval::Multiple < Interval
     self
   end
 
-  [:number,:midpoint,:width].each{|f|
-    define_method(f) {
-      raise Exception::Nonsimple, self
-    }
-  }
-
 end
 
 class Interval
@@ -256,23 +208,15 @@ class Interval
       end
     end
 
-    class Nondegenerate < ArgumentError
+    class NonDegenerate < ArgumentError
       def initialize(i)
         super("#{i.inspect} is not degenerate.")
       end
     end
 
-    class Nonsimple < ArgumentError
+    class NonSimple < ArgumentError
       def initialize(i)
         super("#{i.inspect} is not simple.")
-      end
-    end
-
-    class OpenRight < ArgumentError
-      def initialize(range)
-        super(
-          "Cannot construct an interval from a three-dot range " \
-          "with end-value of type #{range.last.class}.")
       end
     end
   end
