@@ -1,4 +1,4 @@
-require './lib/borel/version.rb'
+require 'borel/version.rb'
 
 Gem::Specification.new do |s|
   s.name = "borel"
@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.authors = ["Amadeus Folego"]
   s.email = ["amadeusfolego@gmail.com"]
   s.homepage = "http://github.com/amadeusfolego/borel"
-  s.summary = "Union and intersection of intervals"
-  s.description = s.summary
+  s.summary = "Generic ordered set's operations"
+  s.description = "Borel sets are made of enumerable union and intersection of intervals. Borel performs regular set operations on any interval of a Comparable class."
   s.rubyforge_project = s.name
   s.required_ruby_version = ">= 1.9.3"
   s.required_rubygems_version = ">= 1.3.6"
