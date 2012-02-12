@@ -1,7 +1,4 @@
-require 'borel/numeric'
-require 'borel/range'
-
-Kernel::Infinity = 1/0.0
+Infinity = 1/0.0
 
 class Interval
   include Enumerable
@@ -16,10 +13,9 @@ class Interval
         [Simple.new(*array)]
       end
     )
-  rescue StandardError
+  rescue
     unless
-        array.all?{|x| Numeric === x} && array.size <= 2 ||
-        array.all?{|x| Array === x && x.size <= 2 && x.all?{|c| Numeric === c}}
+        array.size <= 2 || array.all?{|x| Array === x && x.size <= 2}
       raise Exception::Construction, array
     end
     raise
@@ -33,13 +29,13 @@ class Interval
       elsif l.empty? || x.inf > l.last.sup
         l <<= x
       elsif x.sup > l.last.sup
-        l[-1] = Interval[l.last.inf, x.sup]
+        l[-1] = Simple.new(l.last.inf, x.sup)
       end
     }
     if l.size == 1
       l.first
     else
-      Interval::Multiple.new(l)
+      Multiple.new(l)
     end
   end
 
@@ -77,6 +73,10 @@ class Interval
 
   def +(other)
     self | other
+  end
+
+  def ^(other)
+    self & other
   end
 
   def |(other)
@@ -171,7 +171,7 @@ class Interval::Simple < Interval
   end
 
   def extrema
-    [inf,sup]
+    [inf, sup]
   end
 
   def degenerate?
@@ -189,32 +189,38 @@ class Interval::Multiple < Interval
   end
 
   def each
-    components.each { |o| yield(o) }
+    components.each{|o| yield(o)}
     self
   end
 end
 
-class Interval
-  module Exception
-    class Construction < ArgumentError
-      def initialize(array)
-        super(
-          "An interval can only be constructed either from at most two " \
-          "numbers or from a sequence of arrays of at most two numbers: " +
-          array.inspect)
-      end
+module Borel
+  class Construction < ArgumentError
+    def initialize(array)
+      super(
+        "An interval can only be constructed either from at most two " \
+        "numbers or from a sequence of arrays of at most two numbers: " +
+        array.inspect)
     end
+  end
 
-    class NonDegenerate < ArgumentError
-      def initialize(i)
-        super("#{i.inspect} is not degenerate.")
-      end
+  class NonDegenerate < ArgumentError
+    def initialize(i)
+      super("#{i.inspect} is not degenerate.")
     end
+  end
 
-    class NonSimple < ArgumentError
-      def initialize(i)
-        super("#{i.inspect} is not simple.")
-      end
+  class NonSimple < ArgumentError
+    def initialize(i)
+      super("#{i.inspect} is not simple.")
+    end
+  end
+
+  class OpenRight < ArgumentError
+    def initialize(range)
+      super(
+        "Cannot construct an interval from a three-dot range " \
+        "with end-value #{range.last.inspect}.")
     end
   end
 end
