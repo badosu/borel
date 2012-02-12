@@ -17,6 +17,11 @@ task :install => :build do
   system "gem install pkg/#{gemspec.name}-#{gemspec.version}"
 end
 
+desc "Launches interactive console with borel"
+task :console => :install do
+  system "irb -r #{gemspec.name}"
+end
+
 desc "Clean automatically generated files"
 task :clean do
   FileUtils.rm_rf "pkg"
