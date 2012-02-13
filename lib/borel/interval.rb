@@ -71,18 +71,6 @@ class Interval
     [other.to_interval, self]
   end
 
-  def +(other)
-    self | other
-  end
-
-  def ^(other)
-    self & other
-  end
-
-  def |(other)
-    Interval.union(other.to_interval, self)
-  end
-
   def empty?
     components.empty?
   end
@@ -97,6 +85,22 @@ class Interval
     else
       Interval[components.first.inf, components.last.sup]
     end
+  end
+
+  def union(other)
+    Interval.union(other.to_interval, self)
+  end
+
+  def +(other)
+    self | other
+  end
+
+  def ^(other)
+    self & other
+  end
+
+  def |(other)
+    self.union other.to_interval
   end
 
   [[:&, :intersect]].each do |op, meth|
