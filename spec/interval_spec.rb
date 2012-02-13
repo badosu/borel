@@ -3,13 +3,15 @@ require 'borel/interval'
 describe Interval do
   context '#intersection' do
 
+    it "[]^[] = []" do
+      (Interval[] ^ Interval[]).should eq Interval[]
+    end
+
     it "[]^[0,3] = []" do
-      pending
       (Interval[] ^ Interval[0,3]).should eq Interval[]
     end
 
     it "[0,3]^[] = []" do
-      pending
       (Interval[0,3] ^ Interval[]).should eq Interval[]
     end
 

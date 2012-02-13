@@ -105,7 +105,7 @@ class Interval
 
   [[:&, :intersect]].each do |op, meth|
     define_method(op) {|other|
-      (other.to_interval.map{|y| map{|x| x.send(meth,y)}}.flatten).reduce(:|)
+      (other.to_interval.map{|y| map{|x| x.send(meth,y)}}.flatten).reduce(:|) || Interval[]
     }
   end
 
