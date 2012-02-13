@@ -67,6 +67,18 @@ describe Interval do
   end
 
   context '#minus' do
+    it "[]-[] = []" do
+      (Interval[] - Interval[]).should eq Interval[]
+    end
+
+    it "[1,2]-[] = [1,2]" do
+      (Interval[1,2] - Interval[]).should eq Interval[1,2]
+    end
+
+    it "[]-[1,2] = []" do
+      (Interval[] - Interval[1,2]).should eq Interval[]
+    end
+
     it "[2,3]-(0,1) = [2,3]" do
       (Interval[2,3] - Interval[0,1]).should eq Interval[2,3]
     end

@@ -117,7 +117,11 @@ class Interval
 
   [[:-, :minus]].each do |op, meth|
     define_method(op) {|other|
-      map{|x| other.to_interval.map{|y| x.send(meth,y)}.reduce(:&)}.flatten.reduce(:|)
+      if other.empty?
+        self
+      else
+        map{|x| other.to_interval.map{|y| x.send(meth,y)}.reduce(:&)}.flatten.reduce(:|) || Interval[]
+      end
     }
   end
 end
@@ -184,7 +188,6 @@ class Interval::Simple < Interval
 end
 
 class Interval::Multiple < Interval
-
   attr :components
 
   def initialize(array)
