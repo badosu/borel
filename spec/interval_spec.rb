@@ -70,7 +70,7 @@ describe Interval do
     end
 
     it '[0,1]-(0,1) = [0]U[1]' do
-      (Interval[0,1] - Interval[0,1]).should eq Interval[0] | Interval[1]
+      (Interval[0,1] - Interval[0,1]).should eq Interval[[0],[1]]
     end
 
     it '[1,2]-(2,3) = [1,2]' do
@@ -90,7 +90,7 @@ describe Interval do
     end
 
     it '[1,4]-(1,3) = [1]U[3,4]' do
-      (Interval[1,4] - Interval[1,3]).should eq Interval[3,4] | Interval[1]
+      (Interval[1,4] - Interval[1,3]).should eq Interval[[1],[3,4]]
     end
 
     it '[1,4]-(1,5) = [1]' do
@@ -98,7 +98,7 @@ describe Interval do
     end
 
     it '[1,3]-(2,3) = [1,2]U[3]' do
-      (Interval[1,3] - Interval[2,3]).should eq Interval[1,2] | Interval[3]
+      (Interval[1,3] - Interval[2,3]).should eq Interval[[1,2],[3]]
     end
 
     it '[1,3]-(0,3) = [3]' do
@@ -106,7 +106,7 @@ describe Interval do
     end
 
     it '[-infty,infty]-[0,1] = [-infty,0]U[1,infty]' do
-      (Interval[-Infinity,Infinity] - Interval[0,1]).should eq Interval[-Infinity,0]|Interval[1,Infinity]
+      (Interval[-Infinity,Infinity] - Interval[0,1]).should eq Interval[[-Infinity,0],[1,Infinity]]
     end
 
     it '[0,1]-[-infty,infty] = []' do
