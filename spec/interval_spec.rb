@@ -33,6 +33,18 @@ describe Interval do
   end
 
   context '#union' do
+    it "[]U[] = []" do
+      (Interval[] | Interval[]).should eq Interval[]
+    end
+
+    it "[]U[1,2] = [1,2]" do
+      (Interval[] | Interval[1,2]).should eq Interval[1,2]
+    end
+
+    it "[1,2]U[] = [1,2]" do
+      (Interval[1,2] | Interval[]).should eq Interval[1,2]
+    end
+
     it "[0,3]U[1,2] = [0,3]" do
       (Interval[0,3] | Interval[1,2]).should eq Interval[0,3]
     end
