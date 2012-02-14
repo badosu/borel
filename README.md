@@ -5,9 +5,18 @@ Borelian sets are sets formed by enumerable union, intersection or complement, o
 
 **Borel** enables performing regular operations on any ordered set.
 
-**Borel** was mainly inspired on the **Intervals** [gem][1].
+**Borel** was strongly inspired on the **Intervals** [gem][1], as it borrows much of it's syntax_, and code_.
 
 [1]: http://intervals.rubyforge.org
+
+Install
+-------
+
+Just put this in your **Gemfile**:
+
+```ruby
+    gem 'borel'
+```
 
 Usage
 -----
@@ -84,7 +93,8 @@ __minus__ and __-__
 Interval[0,5] - Interval[-1,3] == Interval[3,5]
 ```
 
-### Remarks
+Remarks
+-------
 
 * At the moment there is no distinction between **open** and **closed** intervals.
 
