@@ -25,6 +25,16 @@ describe Interval do
     end
   end
 
+  context '#empty?' do
+    specify "Interval[] -> true" do
+      Interval[].should be_empty
+    end
+
+    specify "Interval[1] -> false" do
+      Interval[1].should_not be_empty
+    end
+  end
+
   context '#intersection' do
     specify "[]^[] = []" do
       (Interval[] ^ Interval[]).
