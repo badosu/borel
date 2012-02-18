@@ -1,143 +1,176 @@
 require 'borel/interval'
 
 describe Interval do
+
   context '#intersection' do
 
     specify "[]^[] = []" do
-      (Interval[] ^ Interval[]).should eq Interval[]
+      (Interval[] ^ Interval[]).
+        construction.should eq []
     end
 
     specify "[]^[0,3] = []" do
-      (Interval[] ^ Interval[0,3]).should eq Interval[]
+      (Interval[] ^ Interval[0,3]).
+        construction.should eq []
     end
 
     specify "[0,3]^[] = []" do
-      (Interval[0,3] ^ Interval[]).should eq Interval[]
+      (Interval[0,3] ^ Interval[]).
+        construction.should eq []
     end
 
     specify "[0,2]^[1] = [1]" do
-      (Interval[0,2] ^ Interval[1]).should eq Interval[1]
+      (Interval[0,2] ^ Interval[1]).
+        construction.should eq [1]
     end
 
     specify "[-infty, infty]^[0,1] = [0,1]" do
-      (Interval[-Infinity, Infinity] ^ Interval[0,1]).should eq Interval[0,1]
+      (Interval[-Infinity, Infinity] ^ Interval[0,1]).
+        construction.should eq [0,1]
     end
 
     specify "[0,3]^[1,2] = [1,2]" do
-      (Interval[0,3] ^ Interval[1,2]).should eq Interval[1,2]
+      (Interval[0,3] ^ Interval[1,2]).
+        construction.should eq [1,2]
     end
 
     specify "[[-2,-1],[1,2]]^[[0,3],[4,5]] = [1,2]" do
-      (Interval[[-2,-1],[1,2]] ^ Interval[[0,3],[4,5]]).should eq Interval[1,2]
+      (Interval[[-2,-1],[1,2]] ^ Interval[[0,3],[4,5]]).
+        construction.should eq [1,2]
     end
   end
 
   context '#union' do
     specify "[]U[] = []" do
-      (Interval[] | Interval[]).should eq Interval[]
+      (Interval[] | Interval[]).construction.
+        should eq []
     end
 
     specify "[]U[1,2] = [1,2]" do
-      (Interval[] | Interval[1,2]).should eq Interval[1,2]
+      (Interval[] | Interval[1,2]).construction.
+        should eq [1,2]
     end
 
     specify "[1,2]U[] = [1,2]" do
-      (Interval[1,2] | Interval[]).should eq Interval[1,2]
+      (Interval[1,2] | Interval[]).construction.
+        should eq [1,2]
     end
 
     specify "[0,3]U[1,2] = [0,3]" do
-      (Interval[0,3] | Interval[1,2]).should eq Interval[0,3]
+      (Interval[0,3] | Interval[1,2]).construction.
+        should eq [0,3]
     end
 
     specify "[1,2]U[0,3] = [0,3]" do
-      (Interval[1,2] | Interval[0,3]).should eq Interval[0,3]
+      (Interval[1,2] | Interval[0,3]).construction.
+        should eq [0,3]
     end
 
     specify "[1,2]U[1,2] = [1,2]" do
-      (Interval[1,2] | Interval[1,2]).should eq Interval[1,2]
+      (Interval[1,2] | Interval[1,2]).construction.
+        should eq [1,2]
     end
 
     specify "[1,2]U[2,3] = [1,3]" do
-      (Interval[1,2] | Interval[2,3]).should eq Interval[1,3]
+      (Interval[1,2] | Interval[2,3]).construction.
+        should eq [1,3]
     end
 
     specify "[1,2]U[3,4] = [[1,2],[3,4]]" do
-      (Interval[1,2] | Interval[3,4]).should eq Interval[[1,2],[3,4]]
+      (Interval[1,2] | Interval[3,4]).construction.
+        should eq [[1,2],[3,4]]
     end
   end
 
   context '#minus' do
     specify "[]-[] = []" do
-      (Interval[] - Interval[]).should eq Interval[]
+      (Interval[] - Interval[]).construction.
+        should eq []
     end
 
     specify "[1,2]-[] = [1,2]" do
-      (Interval[1,2] - Interval[]).should eq Interval[1,2]
+      (Interval[1,2] - Interval[]).construction.
+        should eq [1,2]
     end
 
     specify "[]-[1,2] = []" do
-      (Interval[] - Interval[1,2]).should eq Interval[]
+      (Interval[] - Interval[1,2]).construction.
+        should eq []
     end
 
     specify "[2,3]-(0,1) = [2,3]" do
-      (Interval[2,3] - Interval[0,1]).should eq Interval[2,3]
+      (Interval[2,3] - Interval[0,1]).construction.
+        should eq [2,3]
     end
 
     specify '[0,1]-(2,3) = [0,1]' do
-      (Interval[0,1] - Interval[2,3]).should eq Interval[0,1]
+      (Interval[0,1] - Interval[2,3]).construction.
+        should eq [0,1]
     end
 
     specify '[1,2]-(0,3) = []' do
-      (Interval[1,2] - Interval[0,3]).should be_empty
+      (Interval[1,2] - Interval[0,3]).construction.
+        should eq []
     end
 
     specify '[0,3]-(1,2) = [0,1]U[2,3]' do
-      (Interval[0,3] - Interval[1,2]).should eq Interval[[0,1],[2,3]]
+      (Interval[0,3] - Interval[1,2]).construction.
+        should eq [[0,1],[2,3]]
     end
 
     specify '[0,1]-(0,1) = [0]U[1]' do
-      (Interval[0,1] - Interval[0,1]).should eq Interval[[0],[1]]
+      (Interval[0,1] - Interval[0,1]).construction.
+        should eq [[0],[1]]
     end
 
     specify '[1,2]-(2,3) = [1,2]' do
-      (Interval[1,2] - Interval[2,3]).should eq Interval[1,2]
+      (Interval[1,2] - Interval[2,3]).construction.
+        should eq [1,2]
     end
 
     specify '[2,3]-(1,2) = [2,3]' do
-      (Interval[2,3] - Interval[1,2]).should eq Interval[2,3]
+      (Interval[2,3] - Interval[1,2]).construction.
+        should eq [2,3]
     end
 
     specify '[1,4]-(0,3) = [3,4]' do
-      (Interval[1,4] - Interval[0,3]).should eq Interval[3,4]
+      (Interval[1,4] - Interval[0,3]).construction.
+        should eq [3,4]
     end
 
     specify '[1,3]-(2,4) = [1,2]' do
-      (Interval[1,3] - Interval[2,4]).should eq Interval[1,2]
+      (Interval[1,3] - Interval[2,4]).construction.
+        should eq [1,2]
     end
 
     specify '[1,4]-(1,3) = [1]U[3,4]' do
-      (Interval[1,4] - Interval[1,3]).should eq Interval[[1],[3,4]]
+      (Interval[1,4] - Interval[1,3]).construction.
+        should eq [[1],[3,4]]
     end
 
     specify '[1,4]-(1,5) = [1]' do
-      (Interval[1,4] - Interval[1,5]).should eq Interval[1]
+      (Interval[1,4] - Interval[1,5]).construction.
+        should eq [1]
     end
 
     specify '[1,3]-(2,3) = [1,2]U[3]' do
-      (Interval[1,3] - Interval[2,3]).should eq Interval[[1,2],[3]]
+      (Interval[1,3] - Interval[2,3]).construction.
+        should eq [[1,2],[3]]
     end
 
     specify '[1,3]-(0,3) = [3]' do
-      (Interval[1,3] - Interval[0,3]).should eq Interval[3]
+      (Interval[1,3] - Interval[0,3]).construction.
+        should eq [3]
     end
 
     specify '[-infty,infty]-[0,1] = [-infty,0]U[1,infty]' do
-      (Interval[-Infinity,Infinity] - Interval[0,1]).
-        should eq Interval[[-Infinity,0],[1,Infinity]]
+      (Interval[-Infinity,Infinity] - Interval[0,1]).construction.
+        should eq [[-Infinity,0], [1,Infinity]]
     end
 
     specify '[0,1]-[-infty,infty] = []' do
-      (Interval[0,1] - Interval[-Infinity,Infinity]).should eq Interval[]
+      (Interval[0,1] - Interval[-Infinity,Infinity]).construction.
+        should eq []
     end
   end
 end
