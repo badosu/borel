@@ -2,8 +2,30 @@ require 'borel/interval'
 
 describe Interval do
 
-  context '#intersection' do
+  context '#construction' do
+    specify "Interval[] -> []" do
+      Interval[].construction.should eq []
+    end
 
+    specify "Interval[1,1] -> [1]" do
+      Interval[1,1].construction.should eq [1]
+    end
+
+    specify "Interval[1,2] -> [1,2]" do
+      Interval[1,2].construction.should eq [1,2]
+    end
+
+    specify "Interval[[1,2],[3,4],[5]] -> [[1,2],[3,4],[5]]" do
+      Interval[[1,2],[3,4],[5]].construction.should eq [[1,2],[3,4],[5]]
+    end
+
+    specify "Interval[-Infinity, Infinity] -> [-Infinity, Infinity]" do
+      Interval[-Infinity, Infinity].construction.
+        should eq [-Infinity, Infinity]
+    end
+  end
+
+  context '#intersection' do
     specify "[]^[] = []" do
       (Interval[] ^ Interval[]).
         construction.should eq []
