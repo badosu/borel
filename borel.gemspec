@@ -1,4 +1,4 @@
-require 'borel/version.rb'
+require './lib/borel/version.rb'
 
 Gem::Specification.new do |s|
   s.name = "borel"
