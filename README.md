@@ -113,5 +113,6 @@ Interval['a','c'] | Interval['b','d'] # -> Interval['a','d']
 
 ### Remarks
 
-* There is no distinction between **open** and **closed** intervals
-* Complement and Minus operations are not supported on any class
+* There is no distinction between **open** and **closed**intervals
+* Complement and Minus operations have limited support for
+non numeric-comparable classes
