@@ -111,6 +111,19 @@ Interval['a','c'] ^ Interval['b','d'] # -> Interval['b','c']
 Interval['a','c'] | Interval['b','d'] # -> Interval['a','d']
 ```
 
+Math Extensions
+---------------
+
+By requiring `borel/math_extensions` you are provided with some natural
+math-related interval methods:
+
+```ruby
+Interval[1,5].rand  # -> Random.new.rand 1..5
+Interval[1,5].width # -> 5-1 or 4
+```
+
+It's supported only for Numeric Comparable and arithmetic supported classes
+
 Remarks
 -------
 
