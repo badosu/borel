@@ -2,7 +2,7 @@ require 'borel/math_extensions/interval_arithmetic'
 
 module Borel
   module Randomizable
-    def random
+    def rand
       raise EmptyInterval if self.respond_to?(:empty?) and self.empty?
 
       if self.simple?
