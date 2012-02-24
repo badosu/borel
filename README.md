@@ -15,13 +15,15 @@ Borelian sets are formed by enumerable union, intersection or
 Install
 -------
 
-You may install it traditionally, for interactive sessions:
+You may install it traditionally, tipically for interactive sessions:
 
-    gem install borel
+    $ gem install borel
 
 Or just put this somewhere on your application's `Gemfile`
 
-    gem 'borel'
+```ruby
+gem 'borel'
+```
 
 Usage
 -----
@@ -102,13 +104,27 @@ __minus__ and __-__
 Interval[0,5] - Interval[-1,3] # -> Interval[3,5]
 ```
 
-### Classes of Intervals
+Generic Intervals
+-----------------
 
-You may use any comparable class
+You may use any **Comparable** class:
+
+* String
 
 ```ruby
 Interval['a','c'] ^ Interval['b','d'] # -> Interval['b','c']
 Interval['a','c'] | Interval['b','d'] # -> Interval['a','d']
+```
+
+* Time
+
+```ruby
+def t(seconds)
+  Time.now + seconds
+end
+
+Interval[t(1),t(5)] ^ Interval[t(3),t(7)] # -> Interval[t(3),t(5)]
+Interval[t(1),t(2)] | Interval[t(3),t(4)] # -> Interval[[t(1),t(2)],[t(3),t(4)]]
 ```
 
 Math Extensions
@@ -118,8 +134,10 @@ By requiring `borel/math_extensions` you are provided with some natural
 math-related interval methods:
 
 ```ruby
+require 'borel/math_extensions'
+
 Interval[1,5].rand  # -> Random.new.rand 1..5
-Interval[1,5].width # -> 5-1 or 4
+Interval[1,5].width # -> 5-1, only for simple intervals
 ```
 
 It's supported only for Numeric Comparable and arithmetic supported classes
@@ -127,9 +145,9 @@ It's supported only for Numeric Comparable and arithmetic supported classes
 Remarks
 -------
 
-* There is no distinction between **open** and **closed**intervals
-* Complement and Minus operations have limited support for
-non numeric-comparable classes
+* There is no distinction between _open_ and _closed_ intervals
+* _complement_ and _minus_ operations, and also _Math Extensions_ have limited
+support for non numeric-comparable classes
 
 License
 -------
