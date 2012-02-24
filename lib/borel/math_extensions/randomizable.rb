@@ -8,4 +8,4 @@ module Borel
   end
 end
 
-Interval.send(:include, Borel::Randomizable) if defined? Interval
+Interval.send(:include, Borel::Randomizable)
