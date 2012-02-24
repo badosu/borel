@@ -1,1 +1,1 @@
-require 'borel/math_extensions/random'
+require 'borel/math_extensions/randomizable'

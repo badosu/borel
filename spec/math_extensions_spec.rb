@@ -1,7 +1,7 @@
 require 'borel/math_extensions'
 
-describe Borel::MathExtensions do
+describe "Intervals Math Extensions" do
   specify do
-    Interval.should include Borel::MathExtensions::Random
+    Interval.should include Borel::Randomizable
   end
 end
