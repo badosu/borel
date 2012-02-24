@@ -3,10 +3,10 @@ require 'borel/math_extensions/interval_arithmetic'
 module Borel
   module Randomizable
     def random
+      raise EmptyInterval if self.respond_to?(:empty?) and self.empty?
+
       if self.simple?
         Random.new.rand Range.new *self.extrema
-      elsif self.degenerate?
-        self.extrema.first
       else
         total_weight = self.map(&:width).reduce(:+)
         selected_weight = Random.new.rand 0..total_weight

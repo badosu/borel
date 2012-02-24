@@ -223,6 +223,12 @@ module Borel
     end
   end
 
+  class EmptyInterval < ArgumentError
+    def initialize
+      super("The interval is empty.")
+    end
+  end
+
   class OpenRight < ArgumentError
     def initialize(range)
       super(
