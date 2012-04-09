@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.authors = ["Amadeus Folego"]
   s.email = ["amadeusfolego@gmail.com"]
-  s.homepage = "http://github.com/amadeusfolego/borel"
+  s.homepage = "http://github.com/badosu/borel"
   s.summary = "Generic ordered set's operations"
   s.description = "Borel sets are made of enumerable union and intersection of
 intervals. Borel performs regular operations on any interval of any
