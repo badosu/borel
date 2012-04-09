@@ -41,36 +41,43 @@ class Interval
     end
   end
 
-  def construction
-    map &:construction
+  def union(other)
+    Interval.union(other.to_interval, self)
+  end
+
+  def intersect(other)
+    other.to_interval.map{|y| map{|x| x.intersect(y)}}.
+      flatten.reduce(:union) || Interval[]
+  end
+
+  def complement
+    map{|x| x.to_interval.map(&:complement).reduce(:intersect)}.
+      flatten.reduce(:union)
+  end
+
+  def minus(other)
+    if other.empty?
+      self
+    else
+      map{|x| other.to_interval.map{|y| x.minus(y)}.reduce(:intersect)}.
+        flatten.reduce(:union) || Interval[]
+    end
   end
 
   def ==(other)
     construction == other.construction
   end
 
-  def inspect
-    "Interval" + construction.inspect
-  end
-
-  def to_s
-    inspect
-  end
-
   def include?(x)
     any?{|i| i.include? x}
   end
 
-  def to_interval
-    self
-  end
-
-  def coerce(other)
-    [other.to_interval, self]
-  end
-
   def empty?
     components.empty?
+  end
+
+  def construction
+    map &:construction
   end
 
   def degenerate?
@@ -85,45 +92,24 @@ class Interval
     end
   end
 
-  def union(other)
-    Interval.union(other.to_interval, self)
+  def to_interval
+    self
   end
 
-  def +(other)
-    self | other
+  def inspect
+    "Interval" + construction.inspect
   end
 
-  def ^(other)
-    self & other
+  def to_s
+    inspect
   end
 
-  def |(other)
-    union other.to_interval
-  end
-
-  [[:&, :intersect]].each do |op, meth|
-    define_method(op) {|other|
-      (other.to_interval.map{|y| map{|x| x.send(meth,y)}}.flatten).
-        reduce(:|) || Interval[]
-    }
-  end
-
-  [[:~, :complement]].each do |op, meth|
-    define_method(op) {
-      map{|x| x.to_interval.map(&meth).reduce(:&)}.flatten.reduce(:|)
-    }
-  end
-
-  [[:-, :minus]].each do |op, meth|
-    define_method(op) {|other|
-      if other.empty?
-        self
-      else
-        map{|x| other.to_interval.map{|y| x.send(meth,y)}.reduce(:&)}.
-          flatten.reduce(:|) || Interval[]
-      end
-    }
-  end
+  alias_method :+, :union
+  alias_method :|, :union
+  alias_method :&, :intersect
+  alias_method :^, :intersect
+  alias_method :~, :complement
+  alias_method :-, :minus
 end
 
 require 'borel/interval_multiple'
