@@ -10,8 +10,9 @@ class Interval::Simple < Interval
     freeze
   end
 
-  def components
-    [self]
+  def each
+    yield(self)
+    self
   end
 
   def intersect(other)
@@ -19,11 +20,15 @@ class Interval::Simple < Interval
   end
 
   def complement
-    Interval[-Infinity, inf] | Interval[sup, Infinity]
+    Interval[[-Infinity, inf], [sup, Infinity]]
   end
 
-  def minus (other)
-    self & ~other
+  def minus(other)
+    other.complement.intersect self
+  end
+
+  def components
+    [self]
   end
 
   def extrema
@@ -35,7 +40,7 @@ class Interval::Simple < Interval
   end
 
   def include?(x)
-    inf <= x  && x <= sup
+    inf <= x && x <= sup
   end
 
   def degenerate?
@@ -44,10 +49,5 @@ class Interval::Simple < Interval
 
   def simple?
     true
-  end
-
-  def each
-    yield(self)
-    self
   end
 end
