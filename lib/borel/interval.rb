@@ -42,11 +42,11 @@ class Interval
   end
 
   def construction
-    map{|x| x.extrema.uniq}
+    map &:construction
   end
 
-  def simple?
-    false
+  def ==(other)
+    construction == other.construction
   end
 
   def inspect
@@ -55,10 +55,6 @@ class Interval
 
   def to_s
     inspect
-  end
-
-  def ==(other)
-    self.components == other.components
   end
 
   def include?(x)
@@ -78,7 +74,7 @@ class Interval
   end
 
   def degenerate?
-    all? {|x| x.degenerate?}
+    all? &:degenerate?
   end
 
   def hull
@@ -102,7 +98,7 @@ class Interval
   end
 
   def |(other)
-    self.union other.to_interval
+    union other.to_interval
   end
 
   [[:&, :intersect]].each do |op, meth|
@@ -128,77 +124,5 @@ class Interval
   end
 end
 
-class Interval::Simple < Interval
-  include Enumerable
-
-  attr :inf
-  attr :sup
-
-  def each
-    yield(self)
-    self
-  end
-
-  def components
-    [self]
-  end
-
-  def initialize (a, b = a)
-    if (a.respond_to?(:nan?) && a.nan? ) || (b.respond_to?(:nan?) && b.nan?)
-      @inf, @sup = -Infinity, Infinity
-    else
-      @inf, @sup = a, b
-    end
-    freeze
-  end
-
-  def ==(other)
-    [inf, sup] == [other.inf, other.sup]
-  end
-
-  def intersect(other)
-    Interval[[inf, other.inf].max, [sup, other.sup].min]
-  end
-
-  def complement
-    Interval[-Infinity,inf] | Interval[sup,Infinity]
-  end
-
-  def minus (other)
-    self & ~other
-  end
-
-  def construction
-    extrema.uniq
-  end
-
-  def simple?
-    true
-  end
-
-  def include?(x)
-    inf <= x  && x <= sup
-  end
-
-  def extrema
-    [inf, sup]
-  end
-
-  def degenerate?
-    inf == sup
-  end
-end
-
-class Interval::Multiple < Interval
-  attr :components
-
-  def initialize(array)
-    @components = array
-    freeze
-  end
-
-  def each
-    components.each{|o| yield(o)}
-    self
-  end
-end
+require 'borel/interval_multiple'
+require 'borel/interval_simple'
