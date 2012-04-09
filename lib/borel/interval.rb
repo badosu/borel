@@ -25,20 +25,16 @@ class Interval
 
   def Interval.union(*array)
     l = []
-    array.map(&:components).flatten.sort_by(&:inf).each{|x|
+    array.map(&:components).flatten.sort_by(&:inf).each do |x|
       if x.sup < x.inf
-        # skip it
+        next
       elsif l.empty? || x.inf > l.last.sup
         l <<= x
       elsif x.sup > l.last.sup
         l[-1] = Simple.new(l.last.inf, x.sup)
       end
-    }
-    if l.size == 1
-      l.first
-    else
-      Multiple.new(l)
     end
+    if l.size == 1 then l.first else Multiple.new(l) end
   end
 
   def union(other)
@@ -84,14 +80,6 @@ class Interval
     all? &:degenerate?
   end
 
-  def hull
-    if empty?
-      Interval[]
-    else
-      Interval[components.first.inf, components.last.sup]
-    end
-  end
-
   def to_interval
     self
   end
@@ -102,6 +90,22 @@ class Interval
 
   def to_s
     inspect
+  end
+
+  def inf
+    first.inf
+  end
+
+  def sup
+    last.sup
+  end
+
+  def hull
+    if empty?
+      Interval[]
+    else
+      Interval[inf, sup]
+    end
   end
 
   alias_method :+, :union
