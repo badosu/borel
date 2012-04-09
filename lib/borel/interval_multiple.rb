@@ -12,11 +12,11 @@ class Interval::Multiple < Interval
   end
 
   def inf
-    first.inf
+    components.first.inf
   end
 
   def sup
-    last.sup
+    components.last.sup
   end
 
   def construction
