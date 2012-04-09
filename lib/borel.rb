@@ -1,4 +1,5 @@
 require 'borel/interval'
+
 require 'borel/array'
 require 'borel/range'
 require 'borel/numeric'
