@@ -1,5 +1,4 @@
 class Interval::Simple < Interval
-  include Enumerable
 
   attr :inf
   attr :sup
