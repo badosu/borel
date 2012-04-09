@@ -11,6 +11,26 @@ class Interval::Multiple < Interval
     self
   end
 
+  def inf
+    first.inf
+  end
+
+  def sup
+    last.sup
+  end
+
+  def construction
+    map &:construction
+  end
+
+  def include?(x)
+    any?{|i| i.include? x}
+  end
+
+  def degenerate?
+    all? &:degenerate?
+  end
+
   def simple?
     false
   end

@@ -5,7 +5,7 @@ Infinity = 1/0.0
 class Interval
   include Enumerable
 
-  def Interval.[](*array)
+  def self.[](*array)
     union(*
       if array.empty?
         []
@@ -16,14 +16,13 @@ class Interval
       end
     )
   rescue
-    unless
-        array.size <= 2 || array.all?{|x| Array === x && x.size <= 2}
+    unless array.size <= 2 || array.all?{|x| Array === x && x.size <= 2}
       raise Exception::Construction, array
     end
     raise
   end
 
-  def Interval.union(*array)
+  def self.union(*array)
     l = []
     array.map(&:components).flatten.sort_by(&:inf).each do |x|
       if x.sup < x.inf
@@ -51,6 +50,11 @@ class Interval
       flatten.reduce(:union)
   end
 
+  def intersect(other)
+    other.to_interval.map{|y| map{|x| x.intersect(y)}}.
+      flatten.reduce(:union) || Interval[]
+  end
+
   def minus(other)
     if other.empty?
       self
@@ -64,20 +68,8 @@ class Interval
     construction == other.construction
   end
 
-  def include?(x)
-    any?{|i| i.include? x}
-  end
-
   def empty?
     components.empty?
-  end
-
-  def construction
-    map &:construction
-  end
-
-  def degenerate?
-    all? &:degenerate?
   end
 
   def to_interval
@@ -90,14 +82,6 @@ class Interval
 
   def to_s
     inspect
-  end
-
-  def inf
-    first.inf
-  end
-
-  def sup
-    last.sup
   end
 
   def hull
