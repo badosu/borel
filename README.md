@@ -42,12 +42,14 @@ An Interval can be initialized with an empty, one or two sized array
 ```
 
 Another way to initialize an Interval is by using the
- **to_interval** method on Ranges or Numbers.
+ `#to_interval` method extension.
 
 ```ruby
-  1.to_interval
-  (0..1).to_interval
-  (0...2).to_interval
+  nil.to_interval     # -> Interval[]
+  1.to_interval       # -> Interval[1]
+  (1..2).to_interval  # -> Interval[1,2]
+  (1...3).to_interval # -> Interval[1,2]
+  [1,2].to_interval   # -> Interval[1,2]
 ```
 
 The **Infinity** constant is available for specifying intervals
