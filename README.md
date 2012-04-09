@@ -33,8 +33,8 @@ Usage
 ### Initializing
 
 An Interval can be initialized with an empty, one or two sized array
- (respectively for an _empty_, _degenerate_ or `simple` interval), or
- an array of one or two sized arrays (for a `multiple` interval).
+ (respectively for an _empty_, _degenerate_ or `Simple` interval), or
+ an array of one or two sized arrays (for a `Multiple` interval).
 
 ```ruby
   Interval[]
@@ -80,7 +80,7 @@ Some natural properties of intervals:
 
 * Complement
 
-__complement__ and __~__
+`#complement`, alias: `~`
 
 ```ruby
     ~Interval[0,5]             # -> Interval[[-Infinity, 0], [5, Infinity]]
@@ -88,7 +88,7 @@ __complement__ and __~__
 
 * Union
 
-__union__, __|__ and __+__
+`union`, aliases: `|`,`+`
 
 ```ruby
 Interval[0,5] | Interval[-1,3] # -> Interval[-1,5]
@@ -96,7 +96,7 @@ Interval[0,5] | Interval[-1,3] # -> Interval[-1,5]
 
 * Intersection
 
-__intersect__, __&__, __^__
+`intersect`, aliases: `&`,`^`
 
 ```ruby
 Interval[0,5] ^ Interval[-1,3] # -> Interval[0,3]
@@ -104,7 +104,7 @@ Interval[0,5] ^ Interval[-1,3] # -> Interval[0,3]
 
 * Subtraction
 
-__minus__ and __-__
+`minus`, alias: `-`
 
 ```ruby
 Interval[0,5] - Interval[-1,3] # -> Interval[3,5]
