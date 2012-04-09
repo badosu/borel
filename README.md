@@ -8,7 +8,9 @@ Borelian sets are formed by enumerable union, intersection or
  of any comparable class.
 
 **Borel** borrows many of the ideas _(and code)_
- from the  **Intervals** [gem][1].
+ from the  **Intervals** [gem][1]. However it differs from Intervals in which
+ it's aim is not on numerical precision and calculation, but on ease of use and
+ solving some general interval related problems.
 
 [1]: http://intervals.rubyforge.org
 
@@ -31,8 +33,8 @@ Usage
 ### Initializing
 
 An Interval can be initialized with an empty, one or two sized array
- (respectively for an _empty_, _degenerate_ or _simple_ interval), or
- an array of one or two sized arrays (for a _multiple_ interval).
+ (respectively for an _empty_, _degenerate_ or `simple` interval), or
+ an array of one or two sized arrays (for a `multiple` interval).
 
 ```ruby
   Interval[]
@@ -52,7 +54,7 @@ Another way to initialize an Interval is by using the
   [1,2].to_interval   # -> Interval[1,2]
 ```
 
-The **Infinity** constant is available for specifying intervals
+The `Infinity` constant is available for specifying intervals
  with no upper or lower boundary.
 
 ```ruby
@@ -66,6 +68,8 @@ The **Infinity** constant is available for specifying intervals
 Some natural properties of intervals:
 
 ```ruby
+  Interval[1,2].inf             # -> 1
+  Interval[1,2].sup             # -> 2
   Interval[1].degenerate?       # -> true
   Interval[[0,1],[2,3]].simple? # -> false
   Interval[].empty?             # -> true
@@ -142,13 +146,13 @@ Interval[1,5].rand  # -> Random.new.rand 1..5
 Interval[1,5].width # -> 5-1, only for simple intervals
 ```
 
-It's supported only for Numeric Comparable and arithmetic supported classes
+It's supported only for `Numeric`, `Comparable` and arithmetic supported classes
 
 Remarks
 -------
 
 * There is no distinction between _open_ and _closed_ intervals
-* _complement_ and _minus_ operations, and also _Math Extensions_ have limited
+* `complement` and `minus` operations, and also _Math Extensions_ have limited
 support for non numeric-comparable classes
 
 License
