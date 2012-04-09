@@ -80,7 +80,7 @@ Some natural properties of intervals:
 
 * Complement
 
-`#complement`, alias: `~`
+`#complement`, alias: `#~`
 
 ```ruby
     ~Interval[0,5]             # -> Interval[[-Infinity, 0], [5, Infinity]]
@@ -88,7 +88,7 @@ Some natural properties of intervals:
 
 * Union
 
-`union`, aliases: `|`,`+`
+`#union`, aliases: `#|`,`#+`
 
 ```ruby
 Interval[0,5] | Interval[-1,3] # -> Interval[-1,5]
@@ -96,7 +96,7 @@ Interval[0,5] | Interval[-1,3] # -> Interval[-1,5]
 
 * Intersection
 
-`intersect`, aliases: `&`,`^`
+`#intersect`, aliases: `#&`,`#^`
 
 ```ruby
 Interval[0,5] ^ Interval[-1,3] # -> Interval[0,3]
@@ -104,7 +104,7 @@ Interval[0,5] ^ Interval[-1,3] # -> Interval[0,3]
 
 * Subtraction
 
-`minus`, alias: `-`
+`#minus`, alias: `#-`
 
 ```ruby
 Interval[0,5] - Interval[-1,3] # -> Interval[3,5]
