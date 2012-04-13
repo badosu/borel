@@ -1,4 +1,7 @@
+# Extends {#to_interval} for the {Array} class
 class Range
+
+  # @return [Interval]
   def to_interval
     Interval[first,
       if exclude_end?

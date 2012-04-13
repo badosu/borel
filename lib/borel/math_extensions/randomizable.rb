@@ -1,7 +1,9 @@
 require 'borel/math_extensions/interval_arithmetic'
 
 module Borel
+  # Includes methods for picking random elements on intervals
   module Randomizable
+    # @return [Object] a random element of the interval
     def rand
       raise EmptyInterval if respond_to?(:empty?) and empty?
 

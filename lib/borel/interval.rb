@@ -1,10 +1,13 @@
 require 'borel/errors'
 
+# Exposes infinity for initializing unbounded intervals
 Infinity = 1/0.0
 
+# Retains all non-specific Interval logic
 class Interval
   include Enumerable
 
+  # @return [Interval]
   def self.[](*array)
     union(*
       if array.empty?
@@ -22,6 +25,7 @@ class Interval
     raise
   end
 
+  # @return [Interval]
   def self.union(*array)
     intervals = []
     array.map(&:components).flatten.sort_by(&:inf).each do |component|
@@ -36,25 +40,30 @@ class Interval
     intervals.size == 1 ? intervals.first : Multiple.new(intervals)
   end
 
+  # @return [Interval]
   def union(other)
     Interval.union(other.to_interval, self)
   end
 
+  # @return [Interval]
   def intersect(other)
     other.to_interval.map{|y| map{|x| x.intersect(y)}}.
       flatten.reduce(:union) || Interval[]
   end
 
+  # @return [Interval]
   def complement
     map{|x| x.to_interval.map(&:complement).reduce(:intersect)}.
       flatten.reduce(:union)
   end
 
+  # @return [Interval]
   def intersect(other)
     other.to_interval.map{|y| map{|x| x.intersect(y)}}.
       flatten.reduce(:union) || Interval[]
   end
 
+  # @return [Interval]
   def minus(other)
     if other.empty?
       self
@@ -64,26 +73,32 @@ class Interval
     end
   end
 
+  # @return [Boolean]
   def ==(other)
     construction == other.construction
   end
 
+  # @return [Boolean]
   def empty?
     components.empty?
   end
 
+  # @return [Interval]
   def to_interval
     self
   end
 
+  # @return [String]
   def inspect
     "Interval" + construction.inspect
   end
 
+  # @return [String]
   def to_s
     inspect
   end
 
+  # @return [Interval]
   def hull
     if empty? then Interval[] else Interval[inf, sup] end
   end
