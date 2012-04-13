@@ -23,17 +23,17 @@ class Interval
   end
 
   def self.union(*array)
-    l = []
-    array.map(&:components).flatten.sort_by(&:inf).each do |x|
-      if x.sup < x.inf
+    intervals = []
+    array.map(&:components).flatten.sort_by(&:inf).each do |component|
+      if component.sup < component.inf
         next
-      elsif l.empty? || x.inf > l.last.sup
-        l <<= x
-      elsif x.sup > l.last.sup
-        l[-1] = Simple.new(l.last.inf, x.sup)
+      elsif intervals.empty? || component.inf > intervals.last.sup
+        intervals <<= component
+      elsif component.sup > intervals.last.sup
+        intervals[-1] = Simple.new(intervals.last.inf, component.sup)
       end
     end
-    if l.size == 1 then l.first else Multiple.new(l) end
+    intervals.size == 1 ? intervals.first : Multiple.new(intervals)
   end
 
   def union(other)

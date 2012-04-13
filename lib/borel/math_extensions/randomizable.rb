@@ -3,14 +3,14 @@ require 'borel/math_extensions/interval_arithmetic'
 module Borel
   module Randomizable
     def rand
-      raise EmptyInterval if self.respond_to?(:empty?) and self.empty?
+      raise EmptyInterval if respond_to?(:empty?) and empty?
 
-      if self.simple?
-        Random.new.rand Range.new *self.extrema
+      if simple?
+        Random.new.rand Range.new *extrema
       else
-        total_weight = self.map(&:width).reduce(:+)
+        total_weight = map(&:width).reduce(:+)
         selected_weight = Random.new.rand 0..total_weight
-        rand_interval = self.find{|c| (selected_weight -= c.width) <= 0}
+        rand_interval = find{|c| (selected_weight -= c.width) <= 0}
         Random.new.rand Range.new *rand_interval.extrema
       end
     end
