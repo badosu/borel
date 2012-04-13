@@ -85,11 +85,7 @@ class Interval
   end
 
   def hull
-    if empty?
-      Interval[]
-    else
-      Interval[inf, sup]
-    end
+    if empty? then Interval[] else Interval[inf, sup] end
   end
 
   alias_method :+, :union
