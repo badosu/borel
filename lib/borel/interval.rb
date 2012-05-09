@@ -1,6 +1,13 @@
 require 'borel/errors'
 
 # Exposes `Infinity` and `-Infinity` for initializing unbounded intervals
+#
+# @example
+#   Interval[-Infinity, 0]
+# @example
+#   Interval[1, Infinity]
+# @example
+#   Interval[-Infinity, Infinity]
 Infinity = 1/0.0
 
 # Retains all non-specific Interval logic
@@ -11,6 +18,8 @@ class Interval
   #
   # @param [Array<Comparable>,Array<Array<Comparable>>] array none, one or
   #  multiple 1,2-length arrays
+  # @return [Interval]
+  #
   # @example Empty interval
   #   Interval[]
   # @example An interval with only one point
@@ -19,7 +28,6 @@ class Interval
   #   Interval[0,1]
   # @example A non simple interval
   #   Interval[[0,1],[2,3],[5]]
-  # @return [Interval]
   def self.[](*array)
     union(*
       if array.empty?
@@ -55,10 +63,10 @@ class Interval
   end
 
   # Performs the operation of union with other interval
-  # @example
-  #   Interval[1,2].union(3..4) == Interval[[1,2],[3,4]] # true
   # @param [#to_interval] other the other interval-compatible object
   # @return [Interval]
+  # @example
+  #   Interval[1,2].union(3..4) == Interval[[1,2],[3,4]] # true
   def union(other)
     Interval.union(other.to_interval, self)
   end

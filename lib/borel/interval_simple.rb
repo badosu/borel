@@ -49,16 +49,26 @@ class Interval::Simple < Interval
     extrema.uniq
   end
 
+  # Verifies that a point is inside the interval
+  #
+  # @param [Comparable] x the point to be verified
   # @return [Boolean]
+  # @example
+  #   Interval[1,5].include?(3.4)   # -> true
   def include?(x)
     inf <= x && x <= sup
   end
 
+  # Verifies that the Interval is degenerate, i.e. the extrema are equal
+  # @example
+  #   Interval[1,2].degenerate?     # -> false
+  #   Interval[1].degenerate?       # -> true
   # @return [Boolean]
   def degenerate?
     inf == sup
   end
 
+  # Verifies that this class represents simple intervals
   # @return [Boolean]
   def simple?
     true
