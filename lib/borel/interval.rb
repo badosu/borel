@@ -1,12 +1,24 @@
 require 'borel/errors'
 
-# Exposes infinity for initializing unbounded intervals
+# Exposes `Infinity` and `-Infinity` for initializing unbounded intervals
 Infinity = 1/0.0
 
 # Retains all non-specific Interval logic
 class Interval
   include Enumerable
 
+  # Initializes an Interval
+  #
+  # @param [Array<Comparable>,Array<Array<Comparable>>] array none, one or
+  #  multiple 1,2-length arrays
+  # @example Empty interval
+  #   Interval[]
+  # @example An interval with only one point
+  #   Interval[1]
+  # @example A simple interval
+  #   Interval[0,1]
+  # @example A non simple interval
+  #   Interval[[0,1],[2,3],[5]]
   # @return [Interval]
   def self.[](*array)
     union(*
@@ -25,6 +37,8 @@ class Interval
     raise
   end
 
+  # Performs the union of Intervals
+  # @param Array<Interval> array the intervals to be united
   # @return [Interval]
   def self.union(*array)
     intervals = []
@@ -40,6 +54,10 @@ class Interval
     intervals.size == 1 ? intervals.first : Multiple.new(intervals)
   end
 
+  # Performs the operation of union with other interval
+  # @example
+  #   Interval[1,2].union(3..4) == Interval[[1,2],[3,4]] # true
+  # @param [#to_interval] other the other interval-compatible object
   # @return [Interval]
   def union(other)
     Interval.union(other.to_interval, self)
@@ -83,7 +101,8 @@ class Interval
     components.empty?
   end
 
-  # @return [Interval]
+  # Implemented for establishing obvious interval-compatibility
+  # @return [Interval] returns `self`
   def to_interval
     self
   end
@@ -98,7 +117,15 @@ class Interval
     inspect
   end
 
-  # @return [Interval]
+  # The convex hull of the Interval
+  # Note that for simple Intervals it is itself
+  #
+  # @example
+  #   Interval[].hull == Interval[] # true
+  # @example
+  #   Interval[[1,2],[3,4]].hull == Interval[1,4] # true
+  #
+  # @return [Interval] a simple Interval composed by the inf and sup points
   def hull
     if empty? then Interval[] else Interval[inf, sup] end
   end
