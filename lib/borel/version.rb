@@ -5,7 +5,7 @@ module Borel
   # Minor version number
   MINOR = 3
   # Tiny version number
-  TINY = 3
+  TINY = 4
 
   # Joins the version numbers
   VERSION = [MAJOR, MINOR, TINY].join('.')
