@@ -20,8 +20,8 @@ describe Interval do
     end
 
     specify "Interval[-Infinity, Infinity] -> [-Infinity, Infinity]" do
-      Interval[-Infinity, Infinity].construction.
-        should eq [-Infinity, Infinity]
+      Interval[-Float::INFINITY, Float::INFINITY].construction.
+        should eq [-Float::INFINITY, Float::INFINITY]
     end
   end
 
@@ -57,7 +57,7 @@ describe Interval do
     end
 
     specify "[-infty, infty]^[0,1] = [0,1]" do
-      (Interval[-Infinity, Infinity] ^ Interval[0,1]).
+      (Interval[-Float::INFINITY, Float::INFINITY] ^ Interval[0,1]).
         construction.should eq [0,1]
     end
 
@@ -196,12 +196,12 @@ describe Interval do
     end
 
     specify '[-infty,infty]-[0,1] = [-infty,0]U[1,infty]' do
-      (Interval[-Infinity,Infinity] - Interval[0,1]).construction.
-        should eq [[-Infinity,0], [1,Infinity]]
+      (Interval[-Float::INFINITY,Float::INFINITY] - Interval[0,1]).construction.
+        should eq [[-Float::INFINITY,0], [1,Float::INFINITY]]
     end
 
     specify '[0,1]-[-infty,infty] = []' do
-      (Interval[0,1] - Interval[-Infinity,Infinity]).construction.
+      (Interval[0,1] - Interval[-Float::INFINITY,Float::INFINITY]).construction.
         should eq []
     end
   end

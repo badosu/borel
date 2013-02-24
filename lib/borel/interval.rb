@@ -8,7 +8,7 @@ require 'borel/errors'
 #   Interval[1, Infinity]
 # @example
 #   Interval[-Infinity, Infinity]
-Infinity = 1/0.0
+Infinity = Float::INFINITY
 
 # Retains all non-specific Interval logic
 class Interval

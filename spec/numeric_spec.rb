@@ -21,11 +21,11 @@ describe Numeric do
     end
 
     it "1/0 should be [Infinity]" do
-      (1/0.0).to_interval.should eq Interval[Infinity]
+      (1/0.0).to_interval.should eq Interval[Float::INFINITY]
     end
 
     it "Infinity should be [Infinity]" do
-      (-1/0.0).to_interval.should eq Interval[-Infinity]
+      (-1/0.0).to_interval.should eq Interval[-Float::INFINITY]
     end
 
   end

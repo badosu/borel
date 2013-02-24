@@ -6,7 +6,7 @@ class Interval::Simple < Interval
 
   def initialize (a, b = a)
     if (a.respond_to?(:nan?) && a.nan?) || (b.respond_to?(:nan?) && b.nan?)
-      @inf, @sup = -Infinity, Infinity
+      @inf, @sup = -Float::INFINITY, Float::INFINITY
     else
       @inf, @sup = a, b
     end
@@ -26,7 +26,7 @@ class Interval::Simple < Interval
 
   # @return [Interval::Multiple]
   def complement
-    Interval[[-Infinity, inf], [sup, Infinity]]
+    Interval[[-Float::INFINITY, inf], [sup, Float::INFINITY]]
   end
 
   # @return [Interval]

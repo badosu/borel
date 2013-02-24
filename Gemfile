@@ -7,4 +7,5 @@ group :development do
   gem 'guard-rspec', '~> 0.7.0'
   gem 'yard', '~> 0.7.5'
   gem 'redcarpet'
+  gem 'fivemat'
 end
