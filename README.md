@@ -1,6 +1,8 @@
 Borel
 =====
 
+[![Build Status](https://travis-ci.org/badosu/borel.png)](https://travis-ci.org/badosu/borel)
+
 Borelian sets are formed by enumerable union, intersection or
  complement, of intervals.
 
