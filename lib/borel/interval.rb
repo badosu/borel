@@ -72,12 +72,6 @@ class Interval
   end
 
   # @return [Interval]
-  def intersect(other)
-    other.to_interval.map{|y| map{|x| x.intersect(y)}}.
-      flatten.reduce(:union) || Interval[]
-  end
-
-  # @return [Interval]
   def complement
     map{|x| x.to_interval.map(&:complement).reduce(:intersect)}.
       flatten.reduce(:union)
