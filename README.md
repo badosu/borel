@@ -148,7 +148,20 @@ Interval[1,5].rand  # -> Random.new.rand 1..5
 Interval[1,5].width # -> 5-1, only for simple intervals
 ```
 
-It's supported only for `Numeric`, `Comparable` and arithmetic supported classes
+It's supported only for `Numeric`, `Comparable` and arithmetic supported
+classes
+
+Implementations
+---------------
+
+The following engines and versions are continuosly tested:
+
+* MRI 1.9.3
+* MRI 2.0.0
+* Latest jRuby Stable
+* Latest Rubinius Stable
+
+MRI 1.8.7 has limited supported with some patches
 
 Remarks
 -------
