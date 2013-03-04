@@ -1,7 +1,7 @@
 Borel
 =====
 
-[![Build Status](https://travis-ci.org/badosu/borel.png)](https://travis-ci.org/badosu/borel)
+[![Build Status](https://travis-ci.org/badosu/borel.png)](https://travis-ci.org/badosu/borel) [![Gem Version](https://badge.fury.io/rb/borel.png)](http://badge.fury.io/rb/borel) [![Code Climate](https://codeclimate.com/github/badosu/borel.png)](https://codeclimate.com/github/badosu/borel)
 
 Borelian sets are formed by enumerable union, intersection or
  complement, of intervals.
