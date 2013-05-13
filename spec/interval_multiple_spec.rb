@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'borel/interval'
 
 describe Interval::Multiple do

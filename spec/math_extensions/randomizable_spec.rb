@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'borel/math_extensions/randomizable'
 
 describe Borel::Randomizable do
