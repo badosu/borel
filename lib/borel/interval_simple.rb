@@ -21,7 +21,9 @@ class Interval::Simple < Interval
 
   # @return [Interval]
   def intersect(other)
-    Interval[[inf, other.inf].max, [sup, other.sup].min]
+    other.map{ |component|
+      Interval[[inf, component.inf].max, [sup, component.sup].min]
+    }.reduce(:union) || Interval[]
   end
 
   # @return [Interval::Multiple]
