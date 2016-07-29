@@ -3,7 +3,9 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
-  - 2.3
+  - 2.3.0
+before_install:
+  - gem install bundler
 script: SPEC_OPTS="-cf doc" bundle exec rake spec
 notifications:
   irc:
