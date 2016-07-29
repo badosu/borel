@@ -6,8 +6,7 @@ describe Interval::Simple do
     specify "[1,2]; [[1], [2]] -> [[1], [2]]" do
       x = Interval[[1, 2]]
       y = Interval[[1], [2]]
-      expect(x.intersect y).to eq y
+      x.intersect(y).should eq y
     end
   end
-
 end
