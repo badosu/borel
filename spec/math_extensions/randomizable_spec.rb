@@ -12,7 +12,7 @@ describe Borel::Randomizable do
 
   context '#random' do
     let(:interval){ Interval[1,10] }
-    let(:rand_mock) { mock }
+    let(:rand_mock) { double }
 
     it 'should be a point inside the interval' do
       interval.should include interval.rand
